@@ -1,0 +1,19 @@
+.detailsPanel {
+    position: absolute;
+    background-color: transparent;
+    color: white;
+    text-align: center;
+    max-width: 450px;
+    min-width: 300px;
+    max-height: 450px;
+    overflow-y: hidden;
+    visibility: hidden;
+    /* margin-left: 50px; */
+    margin-top: 15%;
+    /* left: 50%; */
+    right: 20%; /*doesnt work for page resize*/
+}
+
+div {
+    margin-top: 10px;
+}

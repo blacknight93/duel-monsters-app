@@ -1,0 +1,35 @@
+.menu {
+    position: absolute;
+    width: 400px;
+    height: 600px;
+    top: 30%;
+    left: 37%;
+    list-style-type: none;
+    margin-right: 50%;
+}
+
+.menuOptions {
+    list-style-type: none;
+    font-size: 28px;
+}
+
+.menuOptions li {
+    padding: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.menuOptions a {
+    /* display: block; */
+    font-family: EBGaramond, serif;
+    color: white;
+    text-decoration: none;
+    /* text-align: center; */
+}
+
+.menuOptions a > img {
+    padding-right: 10px;
+}

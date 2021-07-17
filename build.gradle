@@ -1,0 +1,79 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.4.2'
+    id 'java'
+    id 'com.github.node-gradle.node' version '3.1.0'
+//    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+
+//apply plugin: 'io.spring.dependency-management'
+
+def springVersion = '2.1.8.RELEASE'
+group = 'com.example'
+version = '1.0.0'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+node {
+    download = true
+    version = '14.15.5'
+    yarnVersion = '1.22.4'
+    nodeModulesDir = file("${project.projectDir}/src/main/webapp/ui")
+    yarnWorkDir = file("${project.projectDir}/src/main/webapp/ui")
+}
+
+task cleanDirectories() {
+    def staticDir = 'src/main/resources/static'
+    delete staticDir
+    file(staticDir).mkdirs()
+    delete 'src/main/webapp/ui/build'
+}
+
+task buildUI(type: YarnTask) {
+    args = ['build']
+}
+
+task testUI(type: YarnTask) {
+    args = ['test']
+}
+
+task loadUI(type: Copy) {
+    from ('src/main/webapp/ui/build')
+    into ('src/main/resources/static/.')
+}
+
+task generateVersionFile() {
+    doLast {
+        new File(projectDir, "version.txt").text="""version: $version
+        applicationName: $rootProject.name"""
+    }
+}
+
+task getCurrentVersion() {
+    print(version)
+}
+
+cleanDirectories.dependsOn("clean")
+buildUI.dependsOn("cleanDirectories", "yarn_install")
+loadUI.dependsOn("buildUI")
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web:' + springVersion
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:' + springVersion
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:' + springVersion
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,68 @@
+.sortButton {
+    background: transparent;
+    color: white;
+    font-size: 28px;
+    font-family: EBGaramond, serif;
+    border: none;
+    margin-right: 15px;
+    margin-left: 0px;
+    text-decoration: none;
+}
+
+.selected {
+    color: gold;
+    text-decoration: underline;
+}
+
+.inventoryList {
+    position: absolute;
+    font-family: EBGaramond, serif;
+    font-size: 20px;
+    color: white;
+    max-width: 400px;
+    min-width: 300px;
+    max-height: 450px;
+    overflow-y: scroll;
+    list-style-type: none;
+    padding: 0;
+    margin-top: 15%;
+    left: 40%;
+}
+
+.inventoryList > li {
+    border-bottom: 1px solid white;
+    margin-left: 5px;
+}
+
+.monsterItem {
+    background-color: peru;
+}
+
+.spellItem {
+    background-color: teal;
+}
+
+.trapItem {
+    background-color: purple;
+}
+
+.xyzItem {
+    background-color: midnightblue;
+}
+
+.fusionItem {
+    background-color: darkviolet;
+}
+
+.synchroItem {
+    background-color: whitesmoke;
+    color: black;
+}
+
+.pendulumItem {
+    background-color: midnightblue;
+}
+
+.linkItem {
+    background-color: royalblue;
+}
