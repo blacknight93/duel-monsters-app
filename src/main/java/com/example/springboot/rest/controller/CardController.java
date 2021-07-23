@@ -42,6 +42,18 @@ public class CardController {
         }
     }
 
+    //View list of all decks
+    @GetMapping("/inventory/decks")
+    public ResponseEntity<Object> getDecks() {
+        return new ResponseEntity<>(service.getDecks(), HttpStatus.OK);
+    }
+
+    //View list of all tags
+    @GetMapping("/inventory/tags")
+    public ResponseEntity<Object> getTags() {
+        return new ResponseEntity<>(service.getTags(), HttpStatus.OK);
+    }
+
 //    //View the first card with the given cardNo
 //    @GetMapping("/card/cardNo")
 //    public ResponseEntity<Object> getCardNo() {

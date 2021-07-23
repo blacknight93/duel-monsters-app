@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.application.CardType;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +20,28 @@ public class CardService {
 
     public List<Card> getAll() {
         return repository.findAll();
+    }
+
+    public List<String> getDecks() {
+        List<Card> cardList = getAll();
+        Set<String> deckList = new HashSet<>();
+        
+        for(int i = 0; i < cardList.size(); i++) {
+            deckList.addAll(cardList.get(i).getDeck());
+        }
+
+        return deckList.stream().collect(Collectors.toList());
+    }
+
+    public List<String> getTags() {
+        List<Card> cardList = getAll();
+        Set<String> tagList = new HashSet<>();
+        
+        for(int i = 0; i < cardList.size(); i++) {
+            tagList.addAll(cardList.get(i).getTag());
+        }
+
+        return tagList.stream().collect(Collectors.toList());
     }
 
     public List<Card> getAllCardType(String cardType) {

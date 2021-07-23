@@ -1,6 +1,6 @@
 .radioGroup {
     margin-top: 40%;
-    margin-left: 25%;
+    margin-left: 5vw;
     height: 40px;
     font-size: 25px;
     color: white;
@@ -32,4 +32,37 @@ label {
 .selectFireImage {
     background-image:url(../assets/images/attr_fire_icon.png) ;
     width: 100px;
+}
+
+textarea {
+    width: 600px;
+    height: 200px;
+    background-color: white;
+    padding-top: 10px;
+    font-size: 20px;
+    text-align: center;
+    font-family: EBGaramond, serif;
+}
+
+.atkDefInput {
+    width: 75px;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+.formBtn {
+    height: 40px;
+    color: white;
+    font-size: 28px;
+    font-weight: 2px;
+    font-family: EBGaramond, serif;
+}
+
+.okBtn {
+    background-color: green;
+    margin-right: 20px;
+}
+
+.ccBtn {
+    background-color: red;
 }
