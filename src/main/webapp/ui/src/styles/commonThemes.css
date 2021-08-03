@@ -13,6 +13,14 @@
 }
 
 .contentWrapper {
-    position: absolute;
+    position: relative;
     width: 100%;
+    margin: 0 auto;
+    padding: 0 30px;
+    max-width: 1400px;
+}
+
+.formElement {
+    /* position: relative; */
+    margin: 20px auto;
 }
