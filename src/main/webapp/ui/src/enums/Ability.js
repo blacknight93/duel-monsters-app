@@ -3,5 +3,11 @@ export const Ability = Object.freeze({
     GEMINI: "Gemini",
     SPIRIT: "Spirit",
     TOON: "Toon",
-    UNION: "Union"
+    UNION: "Union",
+    FUSION: "Fusion",
+    XYZ: "Xyz",
+    SYNCHRO: "Synchro",
+    PENDULUM: "Pendulum",
+    LINK: "Link",
+
 });

@@ -8,7 +8,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
+    font-family: EBGaramond, serif;
+ }
 
 .modal-content {
     width: 500px;
