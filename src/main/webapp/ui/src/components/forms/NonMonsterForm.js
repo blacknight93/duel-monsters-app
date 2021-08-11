@@ -7,15 +7,14 @@ export default class NonMonsterForm extends Component {
     constructor(props){
         super(props);
         this.state = {
-            cardType: "",
+            cardType: props.cardType,
             cardName: "",
             cardNo: "",
             type: "",
             desc: "",
             count: "",
             decks: [],
-            tags: [],
-            spell: props.spell //true if Spell; false if Trap
+            tags: []
         };
     }
 

@@ -7,6 +7,8 @@ import { Classification } from "../../enums/Classification";
 import LevelIcon from '../../assets/images/level_icon.png';
 import FireIcon from '../../assets/images/attr_fire_icon.png';
 import WindIcon from '../../assets/images/attr_wind_icon.png';
+import LightIcon from '../../assets/images/attr_light_icon.png';
+import DivineIcon from '../../assets/images/attr_divine_icon.png';
 
 export default class MonsterForm extends Component {
     constructor(props){
@@ -113,17 +115,17 @@ export default class MonsterForm extends Component {
                         <label for="fireRadio" style={{verticalAlign: "middle"}}>
                             <img src={FireIcon} alt="Fire Attribute Icon" height="40px" width="40px"/>
                         </label>
-                        <input type="radio" id="fireRadio" name="attrRadioGroup" value="light"/>
-                        <label for="fireRadio" style={{verticalAlign: "middle"}}>
-                            <img src={FireIcon} alt="Fire Attribute Icon" height="40px" width="40px"/>
+                        <input type="radio" id="lightRadio" name="attrRadioGroup" value="light"/>
+                        <label for="lightRadio" style={{verticalAlign: "middle"}}>
+                            <img src={LightIcon} alt="Light Attribute Icon" height="40px" width="40px"/>
                         </label>
                         <input type="radio" id="fireRadio" name="attrRadioGroup" value="dark"/>
                         <label for="fireRadio" style={{verticalAlign: "middle"}}>
                             <img src={FireIcon} alt="Fire Attribute Icon" height="40px" width="40px"/>
                         </label>
-                        <input type="radio" id="fireRadio" name="attrRadioGroup" value="divine"/>
-                        <label for="fireRadio" style={{verticalAlign: "middle", paddingRight: "0"}}>
-                            <img src={FireIcon} alt="Fire Attribute Icon" height="40px" width="40px"/>
+                        <input type="radio" id="divineRadio" name="attrRadioGroup" value="divine"/>
+                        <label for="divineRadio" style={{verticalAlign: "middle", paddingRight: "0"}}>
+                            <img src={DivineIcon} alt="Divine Attribute Icon" height="40px" width="40px"/>
                         </label>
                     </div>
                 </div>

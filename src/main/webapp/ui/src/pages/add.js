@@ -5,10 +5,11 @@ import "../styles/modal.css";
 // import LevelIcon from '../assets/images/level_icon.png';
 // import FireIcon from '../assets/images/attr_fire_icon.png';
 // import WindIcon from '../assets/images/attr_wind_icon.png';
+import { Ability } from '../enums/Ability';
 import AddModal from '../components/modal/AddModal';
 import MonsterForm from '../components/forms/MonsterForm';
 import NonMonsterForm from '../components/forms/NonMonsterForm';
-import FusionForm from '../components/forms/FusionForm';
+import MaterialMonsterForm from '../components/forms/MaterialMonsterForm';
 
 export default class Add extends Component{
     constructor(props) {
@@ -80,13 +81,19 @@ export default class Add extends Component{
     getForm(selectedType) {
         switch (selectedType) {
             case "spell":
-                return <NonMonsterForm spell={true}/>;
+                return <NonMonsterForm cardType={"Spell"}/>;
             case "trap":
-                return <NonMonsterForm spell={false}/>
+                return <NonMonsterForm cardType={"Trap"}/>
             case "fusion":
-                return <FusionForm/>
+                return <MaterialMonsterForm cardType={Ability.FUSION}/>
+            case "synchro":
+                return <MaterialMonsterForm cardType={Ability.SYNCHRO}/>
+            case "xyz":
+                return <MaterialMonsterForm cardType={Ability.XYZ}/>
+            case "link":
+                return <MaterialMonsterForm cardType={Ability.LINK}/>
             default:
-                return <MonsterForm/>
+                return <MonsterForm cardType={"Monster"}/>
         }
     }
 

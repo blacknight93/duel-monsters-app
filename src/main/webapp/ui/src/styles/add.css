@@ -58,6 +58,31 @@ textarea {
     font-family: EBGaramond, serif;
 }
 
+.formListWrapper {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    margin: 25px auto;
+    color: white;
+    font-size: 20px;
+    font-family: EBGaramond serif;
+}
+
+.listCategoryLeft {
+    vertical-align: middle;
+    width: 150px;
+    height: 100%;
+    float: left;
+}
+
+.columnRightList {
+    display: flex;
+    flex-direction: column;
+    float: right;
+    align-items: flex-start;
+}
+
 .okBtn {
     background-color: green;
     margin-right: 20px;
