@@ -22,10 +22,22 @@
 
 .modal-title {
     margin: 0;
+    text-align: center;
+    font-size: 26px
 }
 
 .modal-body {
     padding: 10px;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.modal-button-wrapper {
+    margin-right: 0;
+}
+
+.modal-button {
+    height: 30px;
+    color: white;
 }

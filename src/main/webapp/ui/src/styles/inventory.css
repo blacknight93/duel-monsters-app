@@ -35,34 +35,42 @@
 }
 
 .monsterItem {
-    background-color: peru;
+    background-color: #FF8B53;
 }
 
 .spellItem {
-    background-color: teal;
+    background-color: #1D9E74;
 }
 
 .trapItem {
-    background-color: purple;
+    background-color: #BC5A84;
 }
 
 .xyzItem {
-    background-color: midnightblue;
+    background-color: #000;
+}
+
+.ritualItem {
+    background-color: #9DB5CC;
 }
 
 .fusionItem {
-    background-color: darkviolet;
+    background-color: #A086B7;
 }
 
 .synchroItem {
-    background-color: whitesmoke;
+    background-color: #CCCCCC;
     color: black;
 }
 
 .pendulumItem {
-    background-color: midnightblue;
+    background-color: #1D9E74;
 }
 
 .linkItem {
-    background-color: royalblue;
+    background-color: #00008B;
+}
+
+.tokenItem {
+    background-color: #C0C0C0;
 }

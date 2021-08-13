@@ -82,12 +82,3 @@ textarea {
     float: right;
     align-items: flex-start;
 }
-
-.okBtn {
-    background-color: green;
-    margin-right: 20px;
-}
-
-.ccBtn {
-    background-color: red;
-}

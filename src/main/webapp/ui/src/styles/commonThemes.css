@@ -24,3 +24,12 @@
     /* position: relative; */
     margin: 20px auto;
 }
+
+.okBtn {
+    background-color: green;
+    margin-right: 20px;
+}
+
+.ccBtn {
+    background-color: red;
+}

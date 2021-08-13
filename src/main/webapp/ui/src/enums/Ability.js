@@ -1,4 +1,5 @@
 export const Ability = Object.freeze({
+    NONE: "None",
     FLIP: "Flip",
     GEMINI: "Gemini",
     SPIRIT: "Spirit",

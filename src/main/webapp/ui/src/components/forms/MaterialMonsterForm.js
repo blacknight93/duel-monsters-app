@@ -5,6 +5,7 @@ import { MonsterType } from "../../enums/MonsterType";
 import { Ability } from "../../enums/Ability"; //auto-set to "Fusion" and disabled
 import { Classification } from "../../enums/Classification";
 import LevelIcon from '../../assets/images/level_icon.png';
+import RankIcon from '../../assets/images/rank_icon.png';
 import FireIcon from '../../assets/images/attr_fire_icon.png';
 import WindIcon from '../../assets/images/attr_wind_icon.png';
 import LightIcon from '../../assets/images/attr_light_icon.png';
@@ -17,8 +18,6 @@ export default class MaterialMonsterForm extends Component {
         super(props);
         this.state = {
             cardType: props.cardType,
-            cardName: "",
-            cardNo: "",
             materials: [],
             links: [],
             decks: [],
@@ -113,7 +112,7 @@ export default class MaterialMonsterForm extends Component {
     }
 
     render() {
-        const { cardType, cardName, cardNo, materials, decks, tags } = this.state;
+        const { cardType, materials, decks, tags } = this.state;
 
         let typeOptions = Object.values(MonsterType);
         let abilityOptions = Object.values(Ability);
@@ -128,9 +127,6 @@ export default class MaterialMonsterForm extends Component {
         let abilitySelection = cardType;
         //ELEPHANT: Add info i for each field
         //ELEPHANT: Replace all the FireIcon Attribute placeholders with other Attributes
-        //ELEPHANT: Upon submit, make sure ATK/DEF matches a regular expression for {only numbers || "?"}
-        //ELEPHANT: If deck selection has been made and something is in the deckInput box, select element has priority
-        //ELEPHANT: Check tag input content (only alpha-num char or dashes) against selections from tag list. select element has priority
         //ELEPHANT: Fix text wrapping when material name overflows width
 
         return (
@@ -143,10 +139,10 @@ export default class MaterialMonsterForm extends Component {
                 </div>
                 <div className="formElement" style={{width: "210px"}}>
                     <label for="levelSelect" style={{verticalAlign: "middle"}}>
-                        <img src={LevelIcon} alt="Monster Level Icon" height="40px" width="40px"/>
+                        <img src={cardType === "Xyz"? RankIcon : LevelIcon} alt="Monster Level Icon" height="40px" width="40px"/>
                     </label>
                     <select id="levelSelect" className="cardInfoSelect" style={{width: "125px", verticalAlign: "middle"}}>
-                        <option value="" disabled selected>Select Level</option>
+                        <option value="" disabled selected>{cardType === "Xyz" ? "Select Rank" : "Select Level"}</option>
                         {levelOptions.map((level) => {
                             return <option value={level}>{level}</option>
                         })}
@@ -222,7 +218,7 @@ export default class MaterialMonsterForm extends Component {
                                             <button onClick={this.deleteMaterial} style={{background: "transparent", border: "none"}}>
                                                 <img  id={"deleteMaterialBtn_" + index} src={DeleteIcon} alt="Delete Icon" height="25px" width="25px"/>
                                             </button>
-                                            <div id={"materialText_" + index} style={{float: "right", marginRight: "10px", marginTop: 0, verticalAlign: "middle"}}>{material}</div>
+                                            <div id={"materialText_" + index} className="material" style={{float: "right", marginRight: "10px", marginTop: 0, verticalAlign: "middle"}}>{material}</div>
                                         </span>
                                     )
                                 })}

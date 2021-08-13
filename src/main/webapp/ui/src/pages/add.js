@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import "../styles/commonThemes.css";
 import "../styles/add.css";
 import "../styles/modal.css";
-// import LevelIcon from '../assets/images/level_icon.png';
-// import FireIcon from '../assets/images/attr_fire_icon.png';
-// import WindIcon from '../assets/images/attr_wind_icon.png';
 import { Ability } from '../enums/Ability';
 import AddModal from '../components/modal/AddModal';
 import MonsterForm from '../components/forms/MonsterForm';
@@ -16,50 +13,13 @@ export default class Add extends Component{
         super(props);
         this.state = {
             cardType: "",
-            cardName: "",
-            cardNo: "",
-            level: 0,
-            attr: "",
-            type: "",
-            ability: "",
-            class: "",
-            desc: "",
-            atk: "",
-            def: "",
-            count: "",
-            decks: [],
-            tags: [],
+            cardInfo: {},
             show: false,
-            selectedType: "monster"
+            selectedType: "Monster"
         }
 
         this.filterForSelected = this.filterForSelected.bind(this);
-    }
-
-    componentDidMount() {
-        this.getDecks();
-        this.getTags();
-    }
-
-    async getDecks() {
-        let endpoint = `${window.location.origin}/inventory/decks`;
-        let request = await fetch(endpoint);
-        let response = await request.json();
-
-        this.setState({
-            decks: response
-        });
-
-    }
-
-    async getTags() {
-        let endpoint = `${window.location.origin}/inventory/tags`;
-        let request = await fetch(endpoint);
-        let response = await request.json();
-
-        this.setState({
-            tags: response
-        });
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     filterForSelected() {
@@ -80,24 +40,26 @@ export default class Add extends Component{
 
     getForm(selectedType) {
         switch (selectedType) {
-            case "spell":
+            case "Spell":
                 return <NonMonsterForm cardType={"Spell"}/>;
-            case "trap":
+            case "Trap":
                 return <NonMonsterForm cardType={"Trap"}/>
-            case "fusion":
+            case "Pendulum":
+                return <MaterialMonsterForm cardType={Ability.PENDULUM}/>
+            case "Fusion":
                 return <MaterialMonsterForm cardType={Ability.FUSION}/>
-            case "synchro":
+            case "Synchro":
                 return <MaterialMonsterForm cardType={Ability.SYNCHRO}/>
-            case "xyz":
+            case "Xyz":
                 return <MaterialMonsterForm cardType={Ability.XYZ}/>
-            case "link":
+            case "Link":
                 return <MaterialMonsterForm cardType={Ability.LINK}/>
             default:
                 return <MonsterForm cardType={"Monster"}/>
         }
     }
 
-    onSubmit = () => {
+    onSubmit() {
         /*
             - popup confirmation modal filled with form information
             - "Confirm" and "Cancel" buttons
@@ -105,45 +67,88 @@ export default class Add extends Component{
             - on submit, add info to repository
         */
 
-    //     let cardType = this.filterForSelected("cardTypeRadioGroup");
-    //     let cardNo = document.getElementById("cardNoInput").value;
-    //     let cardName = document.getElementById("cardNameInput").value;
+        const { selectedType } = this.state;
+        let cardInfo = {};
 
-    //     console.log("Info: " + cardType + ", " + cardNo + ", " + cardName);
+        // ALL CARDS
+        cardInfo["cardType"] = selectedType;
+        cardInfo["cardNo"] = document.getElementById("cardNoInput").value;
+        cardInfo["cardName"] = document.getElementById("cardNameInput").value;
+        cardInfo["type"] = document.getElementById("typeSelect").value;
+        cardInfo["desc"] = document.getElementById("descriptionText").value;
+        // cardInfo["deckSelect"] = document.getElementById("deckSelect").value;
+        // cardInfo["deckInput"] = document.getElementById("deckInput").value;
+        cardInfo["deck"] = document.getElementById("deckSelect").value === "" 
+                            ? document.getElementById("deckInput").value
+                            : document.getElementById("deckSelect").value; //ELEPHANT: come back and check that field isn't empty
+        cardInfo["count"] = document.getElementById("countInput").value;
+        cardInfo["tagSelect"] = document.getElementById("tagSelect").value;
+        cardInfo["tagInput"] = document.getElementById("tagInput").value; //ELEPHANT: split tagInput on '/' and concat to tagSelect
 
-    //    this.setState({
-    //         cardType: cardType,
-    //         cardName: cardName,
-    //         cardNo: cardNo,
-    //         // level: 0,
-    //         // attr: "",
-    //         // type: "",
-    //         // ability: "",
-    //         // class: "",
-    //         // desc: "",
-    //         // atk: "",
-    //         // def: "",
-    //         // count: "",
-    //         // decks: [],
-    //         // tags: [],
-    //         show: true
-    //    });
+        if (selectedType !== "Spell" && selectedType !== "Trap") {
+            cardInfo["level"] = document.getElementById("levelSelect").value;
+            //ELEPHANT: get attribute
+            cardInfo["ability"] = document.getElementById("abilitySelect").value;
+            cardInfo["class"] = document.getElementById("classSelect").value;
+            cardInfo["atk"] = document.getElementById("atkInput").value;
+            cardInfo["def"] = selectedType !== "Link" ? document.getElementById("defInput").value : null;
+        }
+
+        if (selectedType === "Fusion" || selectedType === "Xyz" || selectedType === "Synchro") {
+            let materialElements = document.getElementsByClassName("material");
+            let materials = [];
+            for (let i=0; i < materialElements.length; i++) {
+                materials.push(materialElements[i].innerText);
+            }
+            cardInfo["materials"] = materials;
+        } else if (selectedType === "Link") {
+            let materialElements = document.getElementsByClassName("material");
+            let materials = [];
+            for (let i=0; i < materialElements.length; i++) {
+                materials.push(materialElements[i].innerText);
+            }
+            cardInfo["materials"] = materials;
+            //ELEPHANT: get link zones
+        } else if (selectedType === "Pendulum") {
+            //ELEPHANT: get pendulum effect
+            //ELEPHANT: get left and right bounds
+        }
+        
+        console.log("cardInfo");
+        console.log(cardInfo);
+        
+        this.setState({
+            cardInfo: cardInfo,
+            show: true
+        });
+    }
+
+    onCancel = () => {
+        this.setState({
+            show: false
+        });
+    }
+
+    onConfirm = (e) => {
+        console.log("update repository");
     }
 
 
 
     render() {
-        const { show, selectedType } = this.state;
+        const { cardType, cardInfo, show, selectedType } = this.state;
 
         let description = "Cards are stored based on the card number. This number is uneditable, so make sure you've entered it correctly. All other information can be edited at a later time.";
         
         //ELEPHANT: Add info i for each field
         //ELEPHANT: Replace all the FireIcon Attribute placeholders with other Attributes
         //ELEPHANT: Upon submit, make sure ATK/DEF matches a regular expression for {only numbers || "?"}
-        //ELEPHANT: If deck selection has been made and something is in the deckInput box, select element has priority
         //ELEPHANT: Check tag input content (only alpha-num char) against selections from tag list. select element has priority
+        //TODO: HOW THE FORK DID I FORGET ABOUT RITUAL MONSTERS?!?!?!?!?
+        //TODO: AND TOKENS!!! --CRIES--
 
         let formView = this.getForm(selectedType);
+        console.log("show? " + show);
 
         return(
                 <div className="contentWrapper">
@@ -160,29 +165,29 @@ export default class Add extends Component{
                     </div>
                     <div className="formElement" style={{width: "800px"}}>
                         <span id="cardTypeSelection" className="radioGroup">
-                            <input type="radio" id="monsterRadio" name="cardTypeRadioGroup" value="monster" defaultChecked={true} onChange={this.filterForSelected}/>
+                            <input type="radio" id="monsterRadio" name="cardTypeRadioGroup" value="Monster" defaultChecked={true} onChange={this.filterForSelected}/>
                             <label for="monsterRadio">Monster</label>
-                            <input type="radio" id="spellRadio" name="cardTypeRadioGroup" value="spell" onChange={this.filterForSelected}/>
+                            <input type="radio" id="spellRadio" name="cardTypeRadioGroup" value="Spell" onChange={this.filterForSelected}/>
                             <label for="spellRadio">Spell</label>
-                            <input type="radio" id="trapRadio" name="cardTypeRadioGroup" value="trap" onChange={this.filterForSelected}/>
+                            <input type="radio" id="trapRadio" name="cardTypeRadioGroup" value="Trap" onChange={this.filterForSelected}/>
                             <label for="trapRadio">Trap</label>
-                            <input type="radio" id="pendulumRadio" name="cardTypeRadioGroup" value="pendulum" onChange={this.filterForSelected}/>
+                            <input type="radio" id="pendulumRadio" name="cardTypeRadioGroup" value="Pendulum" onChange={this.filterForSelected} disabled/>
                             <label for="pendulumRadio">Pendulum</label>
-                            <input type="radio" id="fusionRadio" name="cardTypeRadioGroup" value="fusion" onChange={this.filterForSelected}/>
+                            <input type="radio" id="fusionRadio" name="cardTypeRadioGroup" value="Fusion" onChange={this.filterForSelected}/>
                             <label for="fusionRadio">Fusion</label>
-                            <input type="radio" id="xyzRadio" name="cardTypeRadioGroup" value="xyz" onChange={this.filterForSelected}/>
+                            <input type="radio" id="xyzRadio" name="cardTypeRadioGroup" value="Xyz" onChange={this.filterForSelected}/>
                             <label for="xyzRadio">Xyz</label>
-                            <input type="radio" id="synchroRadio" name="cardTypeRadioGroup" value="synchro" onChange={this.filterForSelected}/>
+                            <input type="radio" id="synchroRadio" name="cardTypeRadioGroup" value="Synchro" onChange={this.filterForSelected}/>
                             <label for="synchroRadio">Synchro</label>
-                            <input type="radio" id="linkRadio" name="cardTypeRadioGroup" value="link" onChange={this.filterForSelected}/>
+                            <input type="radio" id="linkRadio" name="cardTypeRadioGroup" value="Link" onChange={this.filterForSelected} disabled/>
                             <label for="linkRadio">Link</label>
                         </span>
                     </div>
                     {formView}
                     <div className="formElement" style={{width: "190px", marginTop: "50px"}}>
                         <button className="formBtn okBtn" onClick={this.onSubmit}>Submit</button>
-                        <button className="formBtn ccBtn">Clear</button>
-                        {/* <AddModal cardType={cardType} name={cardName} number={cardNo} show={show}/> */}
+                        <button className="formBtn ccBtn" onClick={this.onCancel}>Clear</button>
+                        <AddModal cardInfo={cardInfo} show={show} onCancel={this.onCancel} onConfirm={this.onConfirm}/>
                     </div>
                 </div>
         )

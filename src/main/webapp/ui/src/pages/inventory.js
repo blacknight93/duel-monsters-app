@@ -106,6 +106,8 @@ export default class Inventory extends Component {
     render() {
         const { cardList, condensedList, selectedCard } = this.state;
 
+        //TODO: HOW THE FORK DID I FORGET ABOUT RITUAL MONSTERS?!?!?!?!?
+        //TODO: AND TOKENS!!! --CRIES--
         let chosenOne = condensedList[selectedCard];
         let cardName, attr, level,
             desc, atk, def, 

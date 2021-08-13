@@ -15,8 +15,6 @@ export default class MonsterForm extends Component {
         super(props);
         this.state = {
             cardType: "",
-            cardName: "",
-            cardNo: "",
             decks: [],
             tags: []
         };
@@ -63,7 +61,7 @@ export default class MonsterForm extends Component {
     }
 
     render() {
-        const { cardType, cardName, cardNo, decks, tags } = this.state;
+        const { decks, tags } = this.state;
 
         let typeOptions = Object.values(MonsterType);
         let abilityOptions = Object.values(Ability);
@@ -74,8 +72,6 @@ export default class MonsterForm extends Component {
 
         //ELEPHANT: Add info i for each field
         //ELEPHANT: Replace all the FireIcon Attribute placeholders with other Attributes
-        //ELEPHANT: Upon submit, make sure ATK/DEF matches a regular expression for {only numbers || "?"}
-        //ELEPHANT: If deck selection has been made and something is in the deckInput box, select element has priority
         //ELEPHANT: Check tag input content (only alpha-num char) against selections from tag list. select element has priority
 
         return (

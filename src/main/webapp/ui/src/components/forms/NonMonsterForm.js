@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import "../../styles/commonThemes.css";
 import "../../styles/add.css";
-import { MonsterType } from "../../enums/MonsterType";
+import { SpellType } from "../../enums/SpellType";
 
 export default class NonMonsterForm extends Component {
     constructor(props){
         super(props);
         this.state = {
             cardType: props.cardType,
-            cardName: "",
-            cardNo: "",
-            type: "",
-            desc: "",
-            count: "",
             decks: [],
             tags: []
         };
@@ -21,6 +16,14 @@ export default class NonMonsterForm extends Component {
     componentDidMount() {
         this.getDecks();
         this.getTags();
+    }
+
+    componentDidUpdate() {
+        if (this.props.cardType !== this.state.cardType) {
+            this.setState({
+                cardType: this.props.cardType
+            });
+        }
     }
 
     async getDecks() {
@@ -59,17 +62,15 @@ export default class NonMonsterForm extends Component {
     }
 
     render() {
-        const { cardType, cardName, cardNo, decks, tags } = this.state;
+        const { cardType, decks, tags } = this.state;
 
-        //adjust typeOptions based on if this is for Spell or Trap
-        let typeOptions = Object.values(MonsterType);
+        //ELEPHANT: adjust typeOptions based on if this is for Spell or Trap
+        let typeOptions = cardType === "Spell" ? Object.values(SpellType) : ["Normal", "Continuous", "Counter"];
         let decksInstructions = "If this card belongs to a deck already in the database, please select that deck from the dropdown. Otherwise, you may enter it in the accompanying text box.";
         let tagInstructions = "You can select one or more options from the list (Ctrl+Click to select multiple tags). If the tag(s) you wish to use is not in the list, use the accompanying text box to include it with this card (separate multiple tags with \"/\")";
 
         //ELEPHANT: Add info i for each field
         //ELEPHANT: Replace all the FireIcon Attribute placeholders with other Attributes
-        //ELEPHANT: Upon submit, make sure ATK/DEF matches a regular expression for {only numbers || "?"}
-        //ELEPHANT: If deck selection has been made and something is in the deckInput box, select element has priority
         //ELEPHANT: Check tag input content (only alpha-num char) against selections from tag list. select element has priority
 
         return (
@@ -81,7 +82,7 @@ export default class NonMonsterForm extends Component {
                     </div>
                 </div>
                 <div className="formElement" style={{width: "650px"}}> 
-                    <div>
+                    <div style={{margin: "0 auto", width: "200px"}}>
                         <select id="typeSelect" className="cardInfoSelect" required>
                             <option value="" disabled selected>Select Type</option>
                             {typeOptions.map((type) => {
