@@ -196,7 +196,7 @@ export default class MonsterForm extends Component {
                             return <option value={tag}>{tag}</option>
                         })}
                     </select>
-                    <input id="tagInput" className="basicInput" style={{width: "250px", verticalAlign: "top"}} maxLength="20" placeholder="Enter tag(s)"/>
+                    <input id="tagInput" className="basicInput" style={{width: "250px", verticalAlign: "top"}} maxLength="120" placeholder="Enter tag(s)"/>
                     <label for="tagInput"/>
                 </span>
                 </div>
