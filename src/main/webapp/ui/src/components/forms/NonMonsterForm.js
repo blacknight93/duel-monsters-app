@@ -77,8 +77,8 @@ export default class NonMonsterForm extends Component {
             <div className="contentWrapper">
                 <div className="formElement" style={{width: "495px"}}>
                     <div>
-                        <input type="text" placeholder="Card Number" id="cardNoInput" className="basicInput" maxLength="10" style={{marginRight: "25px"}}></input>
-                        <input type="text" placeholder="Card Name" id="cardNameInput" className="basicInput" maxLength="50" style={{width: "350px"}}></input>
+                        <input type="text" placeholder="Card Number" id="cardNoInput" className="basicInput" maxLength="10" autoComplete="off" style={{marginRight: "25px"}}></input>
+                        <input type="text" placeholder="Card Name" id="cardNameInput" className="basicInput" maxLength="50" autoComplete="off" style={{width: "350px"}}></input>
                     </div>
                 </div>
                 <div className="formElement" style={{width: "650px"}}> 

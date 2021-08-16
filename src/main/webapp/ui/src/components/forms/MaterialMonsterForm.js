@@ -133,8 +133,8 @@ export default class MaterialMonsterForm extends Component {
             <div className="contentWrapper">
                 <div className="formElement" style={{width: "495px"}}>
                     <div>
-                        <input type="text" placeholder="Card Number" id="cardNoInput" className="basicInput" maxLength="10" style={{marginRight: "25px"}}></input>
-                        <input type="text" placeholder="Card Name" id="cardNameInput" className="basicInput" maxLength="50" style={{width: "350px"}}></input>
+                        <input type="text" placeholder="Card Number" id="cardNoInput" className="basicInput" maxLength="10" autoComplete="off" style={{marginRight: "25px"}}></input>
+                        <input type="text" placeholder="Card Name" id="cardNameInput" className="basicInput" maxLength="50" autoComplete="off" style={{width: "350px"}}></input>
                     </div>
                 </div>
                 <div className="formElement" style={{width: "210px"}}>
@@ -276,7 +276,7 @@ export default class MaterialMonsterForm extends Component {
                             return <option value={tag}>{tag}</option>
                         })}
                     </select>
-                    <input id="tagInput" className="basicInput" style={{width: "250px", verticalAlign: "top"}} maxLength="20" placeholder="Enter tag(s)"/>
+                    <input id="tagInput" className="basicInput" style={{width: "250px", verticalAlign: "top"}} maxLength="150" placeholder="Enter tag(s)"/>
                     <label for="tagInput"/>
                 </span>
                 </div>

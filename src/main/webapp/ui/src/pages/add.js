@@ -59,6 +59,33 @@ export default class Add extends Component{
         }
     }
 
+    filterMultiSelected(selectId) {
+        let selected = [];
+        let elements = document.getElementById(selectId);
+        if(elements !== null) {
+            let i = 0;
+            while (i < elements.options.length) {
+                if (elements.options[i].selected) {selected.push(elements.options[i].value)}
+                i++;
+            }
+        }
+
+        return selected;
+    }
+
+    condensedTags() {
+        let selectTags = this.filterMultiSelected("tagSelect");
+        let inputSelectValue = document.getElementById("tagInput").value.split("/");
+
+        if (selectTags === []) {
+            return inputSelectValue;
+        } else if (inputSelectValue === []) {
+            return selectTags;
+        } else {
+            return selectTags.concat(inputSelectValue);
+        }
+    }
+
     onSubmit() {
         /*
             - popup confirmation modal filled with form information
@@ -72,18 +99,19 @@ export default class Add extends Component{
 
         // ALL CARDS
         cardInfo["cardType"] = selectedType;
-        cardInfo["cardNo"] = document.getElementById("cardNoInput").value;
+        cardInfo["cardNo"] = document.getElementById("cardNoInput").value.toUpperCase();
         cardInfo["cardName"] = document.getElementById("cardNameInput").value;
         cardInfo["type"] = document.getElementById("typeSelect").value;
         cardInfo["desc"] = document.getElementById("descriptionText").value;
-        // cardInfo["deckSelect"] = document.getElementById("deckSelect").value;
-        // cardInfo["deckInput"] = document.getElementById("deckInput").value;
-        cardInfo["deck"] = document.getElementById("deckSelect").value === "" 
-                            ? document.getElementById("deckInput").value
-                            : document.getElementById("deckSelect").value; //ELEPHANT: come back and check that field isn't empty
+        if (document.getElementById("deckSelect").value === "" && document.getElementById("deckInput") === "") {
+            cardInfo["deck"] = "Inventory";
+        } else if (document.getElementById("deckSelect").value !== "") {
+            cardInfo["deck"] = document.getElementById("deckSelect").value;
+        } else {
+            cardInfo["deck"] = document.getElementById("deckInput").value;
+        }
         cardInfo["count"] = document.getElementById("countInput").value;
-        cardInfo["tagSelect"] = document.getElementById("tagSelect").value;
-        cardInfo["tagInput"] = document.getElementById("tagInput").value; //ELEPHANT: split tagInput on '/' and concat to tagSelect
+        cardInfo["tags"] = this.condensedTags();
 
         if (selectedType !== "Spell" && selectedType !== "Trap") {
             cardInfo["level"] = document.getElementById("levelSelect").value;
@@ -116,6 +144,7 @@ export default class Add extends Component{
         
         console.log("cardInfo");
         console.log(cardInfo);
+        let tagList = 
         
         this.setState({
             cardInfo: cardInfo,
@@ -148,7 +177,6 @@ export default class Add extends Component{
         //TODO: AND TOKENS!!! --CRIES--
 
         let formView = this.getForm(selectedType);
-        console.log("show? " + show);
 
         return(
                 <div className="contentWrapper">

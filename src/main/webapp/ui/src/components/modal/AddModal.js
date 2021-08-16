@@ -12,7 +12,7 @@ export default class AddModal extends Component {
             name: props.cardInfo.cardName,
             number: props.cardInfo.cardNo,
             lv: props.cardInfo.level,
-            // attr: props.cardInfo.attribute,
+            attr: props.cardInfo.attribute,
             type: props.cardInfo.type,
             ability: props.cardInfo.ability,
             monsterClass: props.cardInfo.class,
@@ -21,7 +21,7 @@ export default class AddModal extends Component {
             def: props.cardInfo.def,
             deck: props.cardInfo.deck,
             count: props.cardInfo.count,
-            // tags: props.cardInfo.tags,
+            tags: props.cardInfo.tags,
             materials: props.cardInfo.materials,
             // zones: props.cardInfo.zones,
             // pEffect: props.cardInfo.pEffect,
@@ -46,7 +46,7 @@ export default class AddModal extends Component {
                 name: this.props.cardInfo.cardName,
                 number: this.props.cardInfo.cardNo,
                 lv: this.props.cardInfo.level,
-                // attr: this.props.cardInfo.attribute,
+                attr: this.props.cardInfo.attribute,
                 type: this.props.cardInfo.type,
                 ability: this.props.cardInfo.ability,
                 monsterClass: this.props.cardInfo.class,
@@ -55,7 +55,7 @@ export default class AddModal extends Component {
                 def: this.props.cardInfo.def,
                 deck: this.props.cardInfo.deck,
                 count: this.props.cardInfo.count,
-                // tags: this.props.cardInfo.tags,
+                tags: this.props.cardInfo.tags,
                 materials: this.props.cardInfo.materials,
                 // zones: this.props.cardInfo.zones,
                 // pEffect: this.props.cardInfo.pEffect,
@@ -98,16 +98,44 @@ export default class AddModal extends Component {
     //     //
     // }
 
+    formatMaterials(materials) {
+        // const { materials } = this.state;
+        let result = "(";
+
+        for (let i=0; i < materials.length; i++) {
+            result += "\"" + materials[i] + "\""
+            if (i === materials.length - 1) {result += ")"}
+            else { result += " + " }
+        }
+
+        return result;
+    }
+
+    formatTags(tags) {
+        let tagList = "";
+
+        for (let i=0; i < tags.length; i++) {
+            tagList += tags[i]
+            if (i !== tags.length - 1) { tagList += ", "; }
+        }
+
+        return tagList;
+    }
+
     handleClearModal = () => {
         this.props.onCancel();
     }
 
     render() {
-        const { show, cardInfo, cardType, name, number, lv, type, ability, monsterClass, desc, atk, def, deck, count, materials } = this.state
+        const { show, cardInfo, cardType, name, number, attr, lv, type, ability, monsterClass, desc, atk, def, deck, count, tags, materials } = this.state
 
         let bannerColour = this.bannerColour();
-        // let attrSymbol = this.attributeImage();
-        //ELEPHANT: If ability === "NONE", remove from type/ability/class line
+        let formattedMaterials = materials ? <div>{this.formatMaterials(materials)}</div> : null;
+        let formattedTags = tags ? <div>{"Tags: " + this.formatTags(tags)}</div> : null;
+        let formattedModifiers = type ? "[" + type.toUpperCase() + (ability === "None" ? " / " : " / " + ability.toUpperCase() + " / ") + monsterClass.toUpperCase() + "]" : null; 
+
+        console.log("cardInfo");
+        console.log(cardInfo);
 
         return (
             show ? 
@@ -119,23 +147,28 @@ export default class AddModal extends Component {
                     <div className="modal-body">
                         <div style={{background: "#FFFFFF80", padding: "10px", fontSize: "20px"}}>
                             <div style={{textAlign: "center"}}>{name}</div>
-                            <div style={{width: "150px", verticalAlign: "middle", margin: "0 auto"}}>Attribute Icon</div>
-                            <div style={{width: "50px", height: "25px", margin: "0 auto", verticalAlign: "middle"}}>
+                            {attr ? <div style={{width: "150px", verticalAlign: "middle", margin: "0 auto"}}>Attribute Icon</div> : null}
+                            {lv ? <div style={{width: "50px", height: "25px", margin: "0 auto", verticalAlign: "middle"}}>
                                 <img src={LevelIcon} alt="Level" height="25px" width="25px" style={{paddingRight: "10px", verticalAlign: "middle"}}/>
                                 {lv}
-                            </div>
+                            </div> : null}
                             <div>{number}</div>
+                            {formattedMaterials}
                             <div>
-                                {"[" + type.toUpperCase() + " / " + ability.toUpperCase() + " / " + monsterClass.toUpperCase() + "]"}
+                                {ability ? formattedModifiers : type}
                             </div>
                             <div style={{width: "400px", margin: "10px auto", fontSize: "16px", fontStyle: "italic", textAlign: "center"}}>{desc}</div>
-                            <div>{"ATK/" + atk + "  DEF/" + def}</div>
+                            {atk ? <div>{"ATK/" + atk + "  DEF/" + def}</div> : null}
                             <div>{deck + " Deck (" + count + ")"}</div>
+                            {formattedTags}
                         </div>
                     </div>
                     <div className="modal-footer modal-button-wrapper">
-                        <button id="modalOK" className="modal-button okBtn" onClick={this.handleClearModal}>Confirm</button>
-                        <button id="modalCancel" className="modal-button ccBtn" onClick={this.handleClearModal}>Cancel</button>
+                        <div style={{textAlign: "center", fontSize: "20px", marginBottom: "25px"}}>Is the above information correct?</div>
+                        <div style={{width: "200px", marginRight: 0}}>
+                            <button id="modalOK" className="modal-button okBtn" onClick={this.handleClearModal}>Confirm</button>
+                            <button id="modalCancel" className="modal-button ccBtn" onClick={this.handleClearModal}>Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>) : null
