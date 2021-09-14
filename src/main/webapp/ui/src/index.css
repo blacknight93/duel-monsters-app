@@ -22,3 +22,8 @@ code {
   font-family: 'EBGaramond';
   src: local('EBGaramond'), url(./fonts/EBGaramond/EBGaramond-VariableFont_wght.ttf) format('truetype');
 }
+
+@font-face {
+  font-family: 'SeaweedScript';
+  src: local('SeaweedScript'), url(./fonts/Seaweed/SeaweedScript-Regular.ttf) format('truetype');
+}

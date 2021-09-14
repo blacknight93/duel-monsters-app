@@ -6,7 +6,6 @@ export default class Inventory extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentView: 0,
             masterList: [],
             cardList: [],
             condensedList: [],
@@ -65,7 +64,7 @@ export default class Inventory extends Component {
         document.getElementsByClassName("selected")[0].classList.remove("selected");
         document.getElementById(e.target.id).classList.add("selected");
         document.getElementsByClassName("inventoryList")[0].style.left = "40%";
-        document.getElementById("detailsPanel").style.visibility = "hidden";
+        if (document.getElementById("detailsPanel")) { document.getElementById("detailsPanel").style.visibility = "hidden"; }
         this.updateCardList(e.target.innerText);
     }
 
@@ -75,22 +74,22 @@ export default class Inventory extends Component {
         });
     }
 
-    combineAttributeValues(array, attr) {
-        let deckList = [];
+    combineAttributeValues(array, attr, symbol) {
+        let valueList = [];
         let result = [];
 
         for(let i = 0; i < array.length; i++) {
-            deckList = deckList.concat(array[i][attr]);
+            valueList = valueList.concat(array[i][attr]);
         }
 
-        result.push(deckList[0]);
-        for(let i = 1; i < deckList.length; i++) {
-            if (!result.includes(deckList[i])) {
-                result.push(deckList[i]);
+        result.push(valueList[0]);
+        for(let i = 1; i < valueList.length; i++) {
+            if (!result.includes(valueList[i])) {
+                result.push(valueList[i]);
             }
         }
 
-        return (result.length > 1 ? result.join(" / ") : result[0]);
+        return (result.length > 1 ? result.join(symbol) : result[0]);
     }
 
     combineCardNo(array) {
@@ -111,10 +110,12 @@ export default class Inventory extends Component {
         let chosenOne = condensedList[selectedCard];
         let cardName, attr, level,
             desc, atk, def, 
-            count, formattedCardNo, formattedTypes, 
-            formattedDecks, formattedTags;
+            count, formattedCardNo, formattedModifiers, 
+            formattedMaterials, formattedDecks, formattedTags;
 
         if (chosenOne !== undefined) {
+            console.log("chosenOne");
+            console.log(chosenOne);
             cardName = chosenOne[0].cardName;
             attr = chosenOne[0].attribute;
             level = chosenOne[0].level === 0 ? null : chosenOne[0].level;
@@ -123,9 +124,17 @@ export default class Inventory extends Component {
             def = chosenOne[0].def;
             count = chosenOne.reduce(((accumulator,val) => accumulator + val.count), 0);
             formattedCardNo = this.combineCardNo(chosenOne);
-            formattedDecks = this.combineAttributeValues(chosenOne, "deck");
-            formattedTypes = chosenOne[0].type.length > 1 ? chosenOne[0].type.join(" / ") : condensedList[selectedCard][0].type[0];
-            formattedTags = this.combineAttributeValues(chosenOne, "tag");
+            formattedDecks = this.combineAttributeValues(chosenOne, "deck", " / ");
+            if (chosenOne[0].cardType === "Spell" || chosenOne[0].cardType === "Trap") {
+                formattedModifiers = chosenOne[0].type;
+            } else if (chosenOne[0].cardType !== "Spell" && chosenOne[0].cardType !== "Trap" && chosenOne[0].ability) {
+                formattedModifiers = chosenOne[0].type + " / " + chosenOne[0].ability + " / " + chosenOne[0].classification;
+            } else {
+                formattedModifiers = chosenOne[0].type + " / " + chosenOne[0].classification;
+            }
+            let materials = chosenOne[0].materials;
+            if (materials) { formattedMaterials = "(" + (materials.length > 1 ? materials.join(" + ") : materials[0]) + ")";}
+            formattedTags = this.combineAttributeValues(chosenOne, "tag", " / ");
         }
 
         return (
@@ -135,13 +144,13 @@ export default class Inventory extends Component {
                     <button id="monsterBtn" className="sortButton" onClick={this.onClick}>Monster</button>
                     <button id="spellBtn" className="sortButton" onClick={this.onClick}>Spell</button>
                     <button id="trapBtn" className="sortButton" onClick={this.onClick}>Trap</button>
-                    <button id="pendulumBtn" className="sortButton" onClick={this.onClick}>Pendulum</button>
+                    <button id="pendulumBtn" className="sortButton" onClick={this.onClick} disabled>Pendulum</button>
                     <button id="fusionBtn" className="sortButton" onClick={this.onClick}>Fusion</button>
-                    <button id="xyzBtn" className="sortButton" onClick={this.onClick}>Xyz</button>
-                    <button id="synchroBtn" className="sortButton" onClick={this.onClick}>Synchro</button>
-                    <button id="linkBtn" className="sortButton" onClick={this.onClick}>Link</button>
+                    <button id="xyzBtn" className="sortButton" onClick={this.onClick} disabled>Xyz</button>
+                    <button id="synchroBtn" className="sortButton" onClick={this.onClick} disabled>Synchro</button>
+                    <button id="linkBtn" className="sortButton" onClick={this.onClick}disabled>Link</button>
                 </span>
-                <StockList cardList={condensedList} onSelectedCard={this.handleSelectionChange}/>
+                <StockList cardList={condensedList} edit={false} onSelectedCard={this.handleSelectionChange}/>
                 {cardList ? 
                     <div>
                         <DetailsPanel 
@@ -153,7 +162,8 @@ export default class Inventory extends Component {
                             atk={atk}
                             def={def}
                             formattedCardNo={formattedCardNo}
-                            formattedTypes={formattedTypes} 
+                            formattedModifiers={formattedModifiers} 
+                            formattedMaterials={formattedMaterials}
                             formattedDecks={formattedDecks} 
                             formattedTags={formattedTags}
                             count={count}>

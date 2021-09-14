@@ -1,21 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.8744fea7.chunk.css",
-    "main.js": "/static/js/main.8dd40c19.chunk.js",
-    "main.js.map": "/static/js/main.8dd40c19.chunk.js.map",
+    "main.css": "/static/css/main.e195e1a2.chunk.css",
+    "main.js": "/static/js/main.a191b4c0.chunk.js",
+    "main.js.map": "/static/js/main.a191b4c0.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.2707cc84.js",
     "runtime-main.js.map": "/static/js/runtime-main.2707cc84.js.map",
-    "static/js/2.9cd8cf08.chunk.js": "/static/js/2.9cd8cf08.chunk.js",
-    "static/js/2.9cd8cf08.chunk.js.map": "/static/js/2.9cd8cf08.chunk.js.map",
+    "static/js/2.4513c092.chunk.js": "/static/js/2.4513c092.chunk.js",
+    "static/js/2.4513c092.chunk.js.map": "/static/js/2.4513c092.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.8744fea7.chunk.css.map": "/static/css/main.8744fea7.chunk.css.map",
-    "static/js/2.9cd8cf08.chunk.js.LICENSE.txt": "/static/js/2.9cd8cf08.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/static/media/EBGaramond-VariableFont_wght.2a1da2db.ttf",
+    "static/css/main.e195e1a2.chunk.css.map": "/static/css/main.e195e1a2.chunk.css.map",
+    "static/js/2.4513c092.chunk.js.LICENSE.txt": "/static/js/2.4513c092.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/static/media/SeaweedScript-Regular.bfb58285.ttf",
     "static/media/add_icon.c17498a2.png": "/static/media/add_icon.c17498a2.png",
+    "static/media/attr_dark_icon.82ef01b8.png": "/static/media/attr_dark_icon.82ef01b8.png",
     "static/media/attr_divine_icon.615c8e1a.png": "/static/media/attr_divine_icon.615c8e1a.png",
+    "static/media/attr_earth_icon.d813cf74.png": "/static/media/attr_earth_icon.d813cf74.png",
     "static/media/add.css": "/static/media/attr_fire_icon.f71b71b3.png",
     "static/media/attr_light_icon.b0d78315.png": "/static/media/attr_light_icon.b0d78315.png",
+    "static/media/attr_water_icon.8cab52ad.png": "/static/media/attr_water_icon.8cab52ad.png",
     "static/media/attr_wind_icon.f4ff73e3.png": "/static/media/attr_wind_icon.f4ff73e3.png",
+    "static/media/deck_scroll.cf4f10fc.png": "/static/media/deck_scroll.cf4f10fc.png",
     "static/media/delete_icon.55c559a3.png": "/static/media/delete_icon.55c559a3.png",
     "static/media/level_icon.b0d6fa4f.png": "/static/media/level_icon.b0d6fa4f.png",
     "static/media/millenium_eye_trnp_1.1d937b88.png": "/static/media/millenium_eye_trnp_1.1d937b88.png",
@@ -23,8 +27,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.2707cc84.js",
-    "static/js/2.9cd8cf08.chunk.js",
-    "static/css/main.8744fea7.chunk.css",
-    "static/js/main.8dd40c19.chunk.js"
+    "static/js/2.4513c092.chunk.js",
+    "static/css/main.e195e1a2.chunk.css",
+    "static/js/main.a191b4c0.chunk.js"
   ]
 }

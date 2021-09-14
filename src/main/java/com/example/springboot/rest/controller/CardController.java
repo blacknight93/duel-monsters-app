@@ -42,10 +42,30 @@ public class CardController {
         }
     }
 
+    //View all of a cardType
+    @GetMapping("/inventory/name/{cardName}")
+    public ResponseEntity<Object> getByCardName(@PathVariable String cardName) {
+        try {
+            return new ResponseEntity<>(service.getAllCardName(cardName), HttpStatus.OK);
+        } catch (IllegalArgumentException iae) {
+            return new ResponseEntity<>(iae.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     //View list of all decks
     @GetMapping("/inventory/decks")
     public ResponseEntity<Object> getDecks() {
         return new ResponseEntity<>(service.getDecks(), HttpStatus.OK);
+    }
+
+    //View list of all decks
+    @GetMapping("/inventory/deck/{deckName}")
+    public ResponseEntity<Object> getDeckByName(@PathVariable String deckName) {
+        try {
+            return new ResponseEntity<>(service.findCardsByDeck(deckName), HttpStatus.OK);
+        } catch (IllegalArgumentException iae) {
+            return new ResponseEntity<>(iae.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     //View list of all tags
@@ -54,38 +74,13 @@ public class CardController {
         return new ResponseEntity<>(service.getTags(), HttpStatus.OK);
     }
 
-//    //View the first card with the given cardNo
-//    @GetMapping("/card/cardNo")
-//    public ResponseEntity<Object> getCardNo() {
-//        return new ResponseEntity<>(service.getFirstCardNo(), HttpStatus.OK);
-//    }
-
     //Add a new card to repository. Does not allow duplicate cardNo
     @PostMapping("/add")
     public ResponseEntity<Object> addCard( @RequestBody Card newCard ) {
-        try {
+        // try {
             return new ResponseEntity<>(service.addCard(newCard), HttpStatus.CREATED);
-        } catch (IllegalArgumentException iae) {
-            return new ResponseEntity<>(iae.getMessage(), HttpStatus.CONFLICT);
-        }
+        // } catch (IllegalArgumentException iae) {
+        //     return new ResponseEntity<>(iae.getMessage(), HttpStatus.CONFLICT);
+        // }
     }
-
-    //remove single card from repository. if cardNo count > 1, decrement count instead of full delete
-    @PostMapping("/card/single")
-    public ResponseEntity<Object> deleteSingleCardNo( @RequestBody SimpleInput cardNo ) {
-        try {
-            return new ResponseEntity<>(service.decreaseCardNoCount(cardNo), HttpStatus.OK);
-        } catch (IllegalArgumentException iae) {
-            return new ResponseEntity<>(iae.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
-//
-//    @DeleteMapping("/card/multiple")
-//    public ResponseEntity<Object> deleteAllCardNo( @RequestBody String cardNo ) {
-//        try {
-//            return new ResponseEntity<>(service.removeAllCardNo(cardNo), HttpStatus.OK);
-//        } catch (IllegalArgumentException iae) {
-//            return new ResponseEntity<>(iae.getMessage(), HttpStatus.NOT_FOUND);
-//        }
-//    }
 }

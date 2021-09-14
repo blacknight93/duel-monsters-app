@@ -1,5 +1,13 @@
 import { Component } from 'react';
 import '../../styles/inventoryDetails.css';
+import LevelIcon from '../../assets/images/level_icon.png';
+import FireIcon from '../../assets/images/attr_fire_icon.png';
+import WindIcon from '../../assets/images/attr_wind_icon.png';
+import LightIcon from '../../assets/images/attr_light_icon.png';
+import DivineIcon from '../../assets/images/attr_divine_icon.png';
+import WaterIcon from '../../assets/images/attr_water_icon.png';
+import EarthIcon from '../../assets/images/attr_earth_icon.png';
+import DarkIcon from '../../assets/images/attr_dark_icon.png';
 
 export default class DetailsPane extends Component {
     constructor(props) {
@@ -13,7 +21,8 @@ export default class DetailsPane extends Component {
             atk: props.atk,
             def: props.def,
             cardNo: props.formattedCardNo,
-            types: props.formattedTypes,
+            modifiers: props.formattedModifiers,
+            materials: props.formattedMaterials,
             decks: props.formattedDecks,
             tags: props.formattedTags,
             count: props.count
@@ -43,7 +52,7 @@ export default class DetailsPane extends Component {
                 desc: this.props.desc,
                 atk: this.props.atk,
                 def: this.props.def,
-                types: this.props.formattedTypes,
+                modifiers: this.props.formattedModifiers,
                 cardNo: this.props.formattedCardNo,
                 decks: this.props.formattedDecks,
                 tags: this.props.formattedTags,
@@ -52,17 +61,55 @@ export default class DetailsPane extends Component {
         }
     }
 
+    getAttributeIcon() {
+        const { attr } = this.state;
+
+        switch (attr) {
+            case "fire":
+                return FireIcon;
+            case "water":
+                return WaterIcon;
+            case "earth":
+                return EarthIcon;
+            case "wind":
+                return WindIcon;
+            case "dark":
+                return DarkIcon;
+            case "light":
+                return LightIcon;
+            default:
+                return DivineIcon;
+        }
+    }
+
+    getLevelIcons() {
+        const { level } = this.state;
+
+        let row = []
+        for (let i = 0; i < level; i++) {
+            row.push(<img src={LevelIcon} alt="Level" height="25px" width="25px" style={{paddingRight: "10px", verticalAlign: "middle"}}/>);
+        }
+        return row;
+    }
+
     render() {
-        const { cardInfo, cardName, attr, level, desc, atk, def, cardNo, types, decks, tags, count } = this.state;
+        const { cardInfo, cardName, level, desc, atk, def, cardNo, materials, modifiers, decks, tags, count } = this.state;
+
+        let attributeIcon = this.getAttributeIcon();
+        let levelRow = this.getLevelIcons();
 
         return (
             cardInfo ?
                 <span id="detailsPanel" className="detailsPanel">
                     <div id="cardTitle" style={{fontSize: "20px", marginTop: "0px"}}>{cardName}</div>
                     <div id="cardNo" style={{fontSize: "14px"}}>{cardNo}</div>
-                    <div id="attribute" style={{fontSize: "14px"}}>{attr}</div>
-                    <div id="lv"/>
-                    <div id="type" style={{fontSize: "18px"}}>{types}</div>
+                    <div id="attribute" style={{width: "400px", height: "25px", margin: "0 auto", verticalAlign: "middle"}}>{attributeIcon}</div>
+                    
+                    {level ? <div style={{width: "400px", height: "25px", margin: "0 auto", verticalAlign: "middle"}}>
+                                {levelRow}
+                            </div> : null}
+                    <div id="type" style={{fontSize: "18px"}}>{modifiers}</div>
+                    {materials ? materials : null}
                     <div id="desc" style={{fontSize: "16px"}}>{desc}</div>
                     {atk ? <div id="atkDef">
                         <span id={"atk"}>{"ATK: " + atk}</span>

@@ -7,12 +7,14 @@ export default class StockList extends Component {
 
         this.state = {
             cardList: props.cardList,
+            edit: props.edit
         }
     }
 
     componentDidMount() {
         this.setState({
-            cardList: this.props.cardList
+            cardList: this.props.cardList,
+            edit: this.props.edit
         });
     }
 
@@ -37,21 +39,28 @@ export default class StockList extends Component {
                     id="inventoryItem" 
                     className={item[0].cardType.toLowerCase() + "Item"} 
                     onClick={this.onClick}>
-                        {item[0].cardName + (item.length > 1 ? (" (" + count + ")") : "")}
+                        {item[0].cardName + (count > 1 ? (" (" + count + ")") : "")}
                 </li>)
         }));
     }
 
     onClick = (e) => {
-        document.getElementsByClassName("inventoryList")[0].style.left = "25%";
-        document.getElementById("detailsPanel").style.visibility = "visible";
+        const { edit } = this.state;
+
         let cardName = e.target.innerText.includes(' (') ? e.target.innerText.substring(0, e.target.innerText.indexOf(' (')) : e.target.innerText;
-        this.props.onSelectedCard(cardName);
+
+        if (edit) {
+            this.props.onSelectedCard(cardName);
+        } else {
+            document.getElementsByClassName("inventoryList")[0].style.left = "25%";
+            document.getElementById("detailsPanel").style.visibility = "visible";
+            this.props.onSelectedCard(cardName);
+        }
     }
 
     render() {
         const { cardList } = this.state;
-
+        
         let displayList = this.formatListEntries(cardList);
         return (
             <div>

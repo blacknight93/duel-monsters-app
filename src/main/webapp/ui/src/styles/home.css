@@ -10,16 +10,16 @@
 
 .menuOptions {
     list-style-type: none;
+    font-family: EBGaramond, serif;
     font-size: 28px;
 }
 
-.menuOptions li {
-    padding: 0;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
+.menuOptionText {
+    margin: auto 0;
+    float: right;
+    color: white;
+    font-size: 40px;
+    font-family: EBGaramond serif;
 }
 
 .menuOptions a {

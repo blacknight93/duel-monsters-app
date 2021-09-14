@@ -61,16 +61,21 @@ export default class NonMonsterForm extends Component {
         return selected;
     }
 
+    setDeckType = (e) => {
+        if (document.getElementsByClassName("deckTypeSelected")[0]) {
+            document.getElementsByClassName("deckTypeSelected")[0].className = "";
+        }
+        document.getElementById(e.target.id).className = "deckTypeSelected";
+    }
+
     render() {
         const { cardType, decks, tags } = this.state;
 
-        //ELEPHANT: adjust typeOptions based on if this is for Spell or Trap
         let typeOptions = cardType === "Spell" ? Object.values(SpellType) : ["Normal", "Continuous", "Counter"];
-        let decksInstructions = "If this card belongs to a deck already in the database, please select that deck from the dropdown. Otherwise, you may enter it in the accompanying text box.";
+        let decksInstructions = "If this card belongs to a deck already in the database, please select that deck from the dropdown. Otherwise, you may enter it in the accompanying text box.\nSelect the type of deck this card belongs to by checking one of the boxes. If left unchecked, this card will be labelled as part of a Main Deck.";
         let tagInstructions = "You can select one or more options from the list (Ctrl+Click to select multiple tags). If the tag(s) you wish to use is not in the list, use the accompanying text box to include it with this card (separate multiple tags with \"/\")";
 
         //ELEPHANT: Add info i for each field
-        //ELEPHANT: Replace all the FireIcon Attribute placeholders with other Attributes
         //ELEPHANT: Check tag input content (only alpha-num char) against selections from tag list. select element has priority
 
         return (
@@ -104,16 +109,24 @@ export default class NonMonsterForm extends Component {
                         <p style={{width: "450px", fontSize: "18px", textAlign: "center"}}>{decksInstructions}</p>
                     </div>
                 </div>
-                <div className="formElement" style={{width: "485px"}}>
+                <div className="formElement" style={{display: "flex", width: "485px"}}>
+                    <select id="deckSelect" className="cardInfoSelect">
+                        <option value="" disabled selected>Select Deck</option>
+                        {decks.map((deck) => {
+                            return <option value={deck}>{deck}</option>
+                        })}
+                    </select>
+                    <input id="deckInput" className="basicInput" style={{width: "250px", float: "right"}} maxLength="20" placeholder="Enter deck name"/>
+                    <label for="deckInput"/>
+                </div>
+                <div style={{width: "375px", margin: "10px  auto"}}>
                     <span>
-                        <select id="deckSelect" className="cardInfoSelect">
-                            <option value="" disabled selected>Select Deck</option>
-                            {decks.map((deck) => {
-                                return <option value={deck}>{deck}</option>
-                            })}
-                        </select>
-                        <input id="deckInput" className="basicInput" style={{width: "250px"}} maxLength="20" placeholder="Enter deck name"/>
-                        <label for="deckInput"/>
+                        <input type="radio" id="mainDeckRadio" name="deckRadioGroup" value="Main Deck" onChange={this.setDeckType}/>
+                        <label for="mainDeckRadio" style={{color: "white", fontFamily: "EBGaramond, serif", fontSize: "18px", marginRight: "10px"}}>Main Deck</label>
+                        <input type="radio" id="extraDeckRadio" name="deckRadioGroup" value="Extra Deck" onChange={this.setDeckType}/>
+                        <label for="extraDeckRadio" style={{color: "white", fontFamily: "EBGaramond, serif", fontSize: "18px", marginRight: "10px"}}>Extra Deck</label>
+                        <input type="radio" id="sideDeckRadio" name="deckRadioGroup" value="Side Deck" onChange={this.setDeckType}/>
+                        <label for="sideDeckRadio" style={{color: "white", fontFamily: "EBGaramond, serif", fontSize: "18px"}}>Side Deck</label>
                     </span>
                 </div>
                 <div className="formElement" style={{width: "190px"}}>
@@ -132,7 +145,7 @@ export default class NonMonsterForm extends Component {
                             return <option value={tag}>{tag}</option>
                         })}
                     </select>
-                    <input id="tagInput" className="basicInput" style={{width: "250px", verticalAlign: "top"}} maxLength="20" placeholder="Enter tag(s)"/>
+                    <input id="tagInput" className="basicInput" style={{width: "250px", verticalAlign: "top"}} maxLength="70" placeholder="Enter tag(s)"/>
                     <label for="tagInput"/>
                 </span>
                 </div>

@@ -22,7 +22,7 @@ export default class Add extends Component{
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    filterForSelected() {
+    filterForSelected = (e) => {
         let selected = null;
         let elements = document.getElementsByName("cardTypeRadioGroup");
         if(elements !== null) {
@@ -79,7 +79,7 @@ export default class Add extends Component{
 
         if (selectTags === []) {
             return inputSelectValue;
-        } else if (inputSelectValue === []) {
+        } else if (inputSelectValue === [] || inputSelectValue[0] === "") {
             return selectTags;
         } else {
             return selectTags.concat(inputSelectValue);
@@ -102,21 +102,33 @@ export default class Add extends Component{
         cardInfo["cardNo"] = document.getElementById("cardNoInput").value.toUpperCase();
         cardInfo["cardName"] = document.getElementById("cardNameInput").value;
         cardInfo["type"] = document.getElementById("typeSelect").value;
-        cardInfo["desc"] = document.getElementById("descriptionText").value;
+        cardInfo["description"] = document.getElementById("descriptionText").value;
         if (document.getElementById("deckSelect").value === "" && document.getElementById("deckInput") === "") {
-            cardInfo["deck"] = "Inventory";
+            cardInfo["deck"] = ["Inventory"];
         } else if (document.getElementById("deckSelect").value !== "") {
-            cardInfo["deck"] = document.getElementById("deckSelect").value;
+            cardInfo["deck"] = [document.getElementById("deckSelect").value];
         } else {
-            cardInfo["deck"] = document.getElementById("deckInput").value;
+            cardInfo["deck"] = [document.getElementById("deckInput").value];
+        }
+
+        let deckType = document.getElementsByClassName("deckTypeSelected")[0].value;
+        if (deckType === "Extra Deck") {
+            cardInfo["extraDeck"] = true;
+            cardInfo["sideDeck"] = false;
+        } else if (deckType === "Side Deck") {
+            cardInfo["extraDeck"] = false;
+            cardInfo["sideDeck"] = true;
+        } else {
+            cardInfo["extraDeck"] = false;
+            cardInfo["sideDeck"] = false;
         }
         cardInfo["count"] = document.getElementById("countInput").value;
-        cardInfo["tags"] = this.condensedTags();
+        cardInfo["tag"] = this.condensedTags();
 
         if (selectedType !== "Spell" && selectedType !== "Trap") {
             cardInfo["level"] = document.getElementById("levelSelect").value;
-            //ELEPHANT: get attribute
-            cardInfo["ability"] = document.getElementById("abilitySelect").value;
+            cardInfo["attribute"] = document.getElementsByClassName("attrSelected")[0].value;
+            cardInfo["ability"] = document.getElementById("abilitySelect").value === "None" ? null : document.getElementById("abilitySelect").value;
             cardInfo["class"] = document.getElementById("classSelect").value;
             cardInfo["atk"] = document.getElementById("atkInput").value;
             cardInfo["def"] = selectedType !== "Link" ? document.getElementById("defInput").value : null;
@@ -141,10 +153,9 @@ export default class Add extends Component{
             //ELEPHANT: get pendulum effect
             //ELEPHANT: get left and right bounds
         }
-        
+
         console.log("cardInfo");
         console.log(cardInfo);
-        let tagList = 
         
         this.setState({
             cardInfo: cardInfo,
@@ -170,7 +181,6 @@ export default class Add extends Component{
         let description = "Cards are stored based on the card number. This number is uneditable, so make sure you've entered it correctly. All other information can be edited at a later time.";
         
         //ELEPHANT: Add info i for each field
-        //ELEPHANT: Replace all the FireIcon Attribute placeholders with other Attributes
         //ELEPHANT: Upon submit, make sure ATK/DEF matches a regular expression for {only numbers || "?"}
         //ELEPHANT: Check tag input content (only alpha-num char) against selections from tag list. select element has priority
         //TODO: HOW THE FORK DID I FORGET ABOUT RITUAL MONSTERS?!?!?!?!?

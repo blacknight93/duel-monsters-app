@@ -1,6 +1,13 @@
 import { Component } from "react";
 import "../../styles/commonThemes.css"
 import LevelIcon from '../../assets/images/level_icon.png';
+import FireIcon from '../../assets/images/attr_fire_icon.png';
+import WindIcon from '../../assets/images/attr_wind_icon.png';
+import LightIcon from '../../assets/images/attr_light_icon.png';
+import DivineIcon from '../../assets/images/attr_divine_icon.png';
+import WaterIcon from '../../assets/images/attr_water_icon.png';
+import EarthIcon from '../../assets/images/attr_earth_icon.png';
+import DarkIcon from '../../assets/images/attr_dark_icon.png';
 
 export default class AddModal extends Component {
     constructor(props) {
@@ -16,12 +23,12 @@ export default class AddModal extends Component {
             type: props.cardInfo.type,
             ability: props.cardInfo.ability,
             monsterClass: props.cardInfo.class,
-            desc: props.cardInfo.desc,
+            desc: props.cardInfo.description,
             atk: props.cardInfo.atk,
             def: props.cardInfo.def,
             deck: props.cardInfo.deck,
             count: props.cardInfo.count,
-            tags: props.cardInfo.tags,
+            tag: props.cardInfo.tag,
             materials: props.cardInfo.materials,
             // zones: props.cardInfo.zones,
             // pEffect: props.cardInfo.pEffect,
@@ -50,12 +57,12 @@ export default class AddModal extends Component {
                 type: this.props.cardInfo.type,
                 ability: this.props.cardInfo.ability,
                 monsterClass: this.props.cardInfo.class,
-                desc: this.props.cardInfo.desc,
+                desc: this.props.cardInfo.description,
                 atk: this.props.cardInfo.atk,
                 def: this.props.cardInfo.def,
                 deck: this.props.cardInfo.deck,
                 count: this.props.cardInfo.count,
-                tags: this.props.cardInfo.tags,
+                tag: this.props.cardInfo.tag,
                 materials: this.props.cardInfo.materials,
                 // zones: this.props.cardInfo.zones,
                 // pEffect: this.props.cardInfo.pEffect,
@@ -63,6 +70,21 @@ export default class AddModal extends Component {
                 // blueBound: this.props.cardInfo.blueBound
             });
         }
+    }
+
+    async addCard(newCard) {
+        let endpoint = `${window.location.origin}/add`;
+        let request = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newCard)
+        });
+        let response = await request.json();
+
+        console.log(response);
+        console.log(response.message);
     }
 
     bannerColour() {
@@ -87,19 +109,43 @@ export default class AddModal extends Component {
                 return "#00008B";
             case "Token":
                 return "#C0C0C0";
-            case "Monster":
-                return "#FF8B53";
             default:
                 return "#FF8B53"; //Monster
         }
     }
 
-    // attributeImage() {
-    //     //
-    // }
+    getAttributeIcon() {
+        const { attr } = this.state;
+
+        switch (attr) {
+            case "fire":
+                return FireIcon;
+            case "water":
+                return WaterIcon;
+            case "earth":
+                return EarthIcon;
+            case "wind":
+                return WindIcon;
+            case "dark":
+                return DarkIcon;
+            case "light":
+                return LightIcon;
+            default:
+                return DivineIcon;
+        }
+    }
+
+    getLevelIcons() {
+        const { lv } = this.state;
+
+        let row = []
+        for (let i = 0; i < lv; i++) {
+            row.push(<img src={LevelIcon} alt="Level" height="25px" width="25px" style={{paddingRight: "10px", verticalAlign: "middle"}}/>);
+        }
+        return row;
+    }
 
     formatMaterials(materials) {
-        // const { materials } = this.state;
         let result = "(";
 
         for (let i=0; i < materials.length; i++) {
@@ -122,20 +168,75 @@ export default class AddModal extends Component {
         return tagList;
     }
 
+    formatModifiers() {
+        const { cardType, type, ability, monsterClass } = this.state;
+
+        console.log("ability");
+        console.log(ability);
+
+        if (cardType === "Spell" || cardType === "Trap") {
+            return type;
+        } else if (ability === null) {
+            return "[" + type.toUpperCase() + " / " + monsterClass.toUpperCase() + "]";
+        } else {
+            return "[" + type.toUpperCase() + " / " + ability.toUpperCase() + " / " + monsterClass.toUpperCase() + "]";
+        }
+    }
+
+    clearForm() {
+        const { cardType } = this.state;
+
+        //Stuff all cards have
+        document.getElementById("cardNoInput").value = "";
+        document.getElementById("cardNameInput").value = "";
+        document.getElementById("descriptionText").value = "";
+        document.getElementById("deckInput").value = "";
+        document.getElementById("countInput").value = "";
+        document.getElementById("tagInput").value = "";
+        document.getElementById("typeSelect").selectedIndex = -1;
+        document.getElementById("deckSelect").selectedIndex = -1;
+        document.getElementById("tagSelect").selectedIndex = -1;
+
+        if (cardType !== "Spell" && cardType !== "Trap") {
+
+            document.getElementById("atkInput").value = "";
+            document.getElementById("defInput").value = "";
+            document.getElementById("levelSelect").selectedIndex = -1;
+            document.getElementById("abilitySelect").selectedIndex = -1;
+            document.getElementById("classSelect").selectedIndex = -1;
+
+            let radioButtons = document.getElementsByName("attrRadioGroup");
+            for (let i=0; i < radioButtons.length; i++) {
+                radioButtons[i].checked = false;
+            }
+
+        }
+    }
+
     handleClearModal = () => {
         this.props.onCancel();
     }
 
+    handleSubmitModal = () => {
+        const { cardInfo } = this.state;
+
+        console.log("handleSubmitModal");
+        console.log(cardInfo);
+        
+        this.addCard(cardInfo);
+        this.clearForm();
+        this.props.onCancel();
+    }
+
     render() {
-        const { show, cardInfo, cardType, name, number, attr, lv, type, ability, monsterClass, desc, atk, def, deck, count, tags, materials } = this.state
+        const { show, cardType, name, number, attr, lv, type, monsterClass, desc, atk, def, deck, count, tag, materials } = this.state
 
         let bannerColour = this.bannerColour();
         let formattedMaterials = materials ? <div>{this.formatMaterials(materials)}</div> : null;
-        let formattedTags = tags ? <div>{"Tags: " + this.formatTags(tags)}</div> : null;
-        let formattedModifiers = type ? "[" + type.toUpperCase() + (ability === "None" ? " / " : " / " + ability.toUpperCase() + " / ") + monsterClass.toUpperCase() + "]" : null; 
-
-        console.log("cardInfo");
-        console.log(cardInfo);
+        let formattedTags = tag ? <div>{"Tags: " + this.formatTags(tag)}</div> : null;
+        let formattedModifiers = type ? this.formatModifiers() : null;
+        let attributeIcon = this.getAttributeIcon();
+        let lvRow = lv ? this.getLevelIcons() : null;
 
         return (
             show ? 
@@ -147,15 +248,18 @@ export default class AddModal extends Component {
                     <div className="modal-body">
                         <div style={{background: "#FFFFFF80", padding: "10px", fontSize: "20px"}}>
                             <div style={{textAlign: "center"}}>{name}</div>
-                            {attr ? <div style={{width: "150px", verticalAlign: "middle", margin: "0 auto"}}>Attribute Icon</div> : null}
-                            {lv ? <div style={{width: "50px", height: "25px", margin: "0 auto", verticalAlign: "middle"}}>
-                                <img src={LevelIcon} alt="Level" height="25px" width="25px" style={{paddingRight: "10px", verticalAlign: "middle"}}/>
-                                {lv}
+                            {attr ? 
+                                <div style={{width: "150px", verticalAlign: "middle", margin: "0 auto"}}>
+                                    <img src={attributeIcon} alt="Attribute" height="25px" width="25px" style={{paddingRight: "10px", verticalAlign: "middle"}}/>
+                                </div> 
+                                : null}
+                            {lv ? <div style={{width: "400px", height: "25px", margin: "0 auto", verticalAlign: "middle"}}>
+                                {lvRow}
                             </div> : null}
                             <div>{number}</div>
                             {formattedMaterials}
                             <div>
-                                {ability ? formattedModifiers : type}
+                                {monsterClass ? formattedModifiers : type}
                             </div>
                             <div style={{width: "400px", margin: "10px auto", fontSize: "16px", fontStyle: "italic", textAlign: "center"}}>{desc}</div>
                             {atk ? <div>{"ATK/" + atk + "  DEF/" + def}</div> : null}
@@ -166,7 +270,7 @@ export default class AddModal extends Component {
                     <div className="modal-footer modal-button-wrapper">
                         <div style={{textAlign: "center", fontSize: "20px", marginBottom: "25px"}}>Is the above information correct?</div>
                         <div style={{width: "200px", marginRight: 0}}>
-                            <button id="modalOK" className="modal-button okBtn" onClick={this.handleClearModal}>Confirm</button>
+                            <button id="modalOK" className="modal-button okBtn" onClick={this.handleSubmitModal}>Confirm</button>
                             <button id="modalCancel" className="modal-button ccBtn" onClick={this.handleClearModal}>Cancel</button>
                         </div>
                     </div>

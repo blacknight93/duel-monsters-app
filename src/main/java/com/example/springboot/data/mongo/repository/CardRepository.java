@@ -16,5 +16,5 @@ public interface CardRepository extends MongoRepository<Card, String> {
     List<Card> findByTag(String tag);
     List<Card> findByDeck(String deck);
     Card findByCardNo(String cardNo);
-    Card findByCardName(String cardName);
+    List<Card> findByCardName(String cardName);
 }

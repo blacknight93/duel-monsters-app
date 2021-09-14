@@ -9,6 +9,9 @@ import FireIcon from '../../assets/images/attr_fire_icon.png';
 import WindIcon from '../../assets/images/attr_wind_icon.png';
 import LightIcon from '../../assets/images/attr_light_icon.png';
 import DivineIcon from '../../assets/images/attr_divine_icon.png';
+import WaterIcon from '../../assets/images/attr_water_icon.png';
+import EarthIcon from '../../assets/images/attr_earth_icon.png';
+import DarkIcon from '../../assets/images/attr_dark_icon.png';
 
 export default class MonsterForm extends Component {
     constructor(props){
@@ -46,18 +49,18 @@ export default class MonsterForm extends Component {
         });
     }
 
-    filterForSelected(groupName) {
-        let selected = null;
-        let elements = document.getElementsByName(groupName);
-        if(elements !== null) {
-            let i = 0;
-            while (i < elements.length && selected === null) {
-                if (elements[i].checked) {selected = elements[i].value;}
-                i++;
-            }
+    setSelected = (e) => {
+        if (document.getElementsByClassName("attrSelected")[0]) {
+            document.getElementsByClassName("attrSelected")[0].className = "";
         }
+        document.getElementById(e.target.id).className = "attrSelected";
+    }
 
-        return selected;
+    setDeckType = (e) => {
+        if (document.getElementsByClassName("deckTypeSelected")[0]) {
+            document.getElementsByClassName("deckTypeSelected")[0].className = "";
+        }
+        document.getElementById(e.target.id).className = "deckTypeSelected";
     }
 
     render() {
@@ -71,7 +74,6 @@ export default class MonsterForm extends Component {
         let tagInstructions = "You can select one or more options from the list (Ctrl+Click to select multiple tags). If the tag(s) you wish to use is not in the list, use the accompanying text box to include it with this card (separate multiple tags with \"/\")";
 
         //ELEPHANT: Add info i for each field
-        //ELEPHANT: Replace all the FireIcon Attribute placeholders with other Attributes
         //ELEPHANT: Check tag input content (only alpha-num char) against selections from tag list. select element has priority
 
         return (
@@ -95,31 +97,31 @@ export default class MonsterForm extends Component {
                 </div>
                 <div className="formElement" style={{width: "520px"}}>
                     <div>
-                        <input type="radio" id="fireRadio" name="attrRadioGroup" value="fire" style={{fontSize: "25px"}}/>
+                        <input type="radio" id="fireRadio" name="attrRadioGroup" value="fire" style={{fontSize: "25px"}} onChange={this.setSelected}/>
                         <label for="fireRadio" style={{verticalAlign: "middle"}}>
                             <img src={FireIcon} alt="Fire Attribute Icon" height="40px" width="40px"/>
                         </label>
-                        <input type="radio" id="windRadio" name="attrRadioGroup" value="wind"/>
+                        <input type="radio" id="windRadio" name="attrRadioGroup" value="wind" onChange={this.setSelected}/>
                         <label for="windRadio" style={{verticalAlign: "middle"}}>
                             <img src={WindIcon} alt="Wind Attribute Icon" height="40px" width="40px"/>
                         </label>
-                        <input type="radio" id="fireRadio" name="attrRadioGroup" value="water"/>
-                        <label for="fireRadio" style={{verticalAlign: "middle"}}>
-                            <img src={FireIcon} alt="Fire Attribute Icon" height="40px" width="40px"/>
+                        <input type="radio" id="waterRadio" name="attrRadioGroup" value="water" onChange={this.setSelected}/>
+                        <label for="waterRadio" style={{verticalAlign: "middle"}}>
+                            <img src={WaterIcon} alt="Water Attribute Icon" height="40px" width="40px"/>
                         </label>
-                        <input type="radio" id="fireRadio" name="attrRadioGroup" value="earth"/>
-                        <label for="fireRadio" style={{verticalAlign: "middle"}}>
-                            <img src={FireIcon} alt="Fire Attribute Icon" height="40px" width="40px"/>
+                        <input type="radio" id="earthRadio" name="attrRadioGroup" value="earth" onChange={this.setSelected}/>
+                        <label for="earthRadio" style={{verticalAlign: "middle"}}>
+                            <img src={EarthIcon} alt="Earth Attribute Icon" height="40px" width="40px"/>
                         </label>
-                        <input type="radio" id="lightRadio" name="attrRadioGroup" value="light"/>
+                        <input type="radio" id="lightRadio" name="attrRadioGroup" value="light" onChange={this.setSelected}/>
                         <label for="lightRadio" style={{verticalAlign: "middle"}}>
                             <img src={LightIcon} alt="Light Attribute Icon" height="40px" width="40px"/>
                         </label>
-                        <input type="radio" id="fireRadio" name="attrRadioGroup" value="dark"/>
-                        <label for="fireRadio" style={{verticalAlign: "middle"}}>
-                            <img src={FireIcon} alt="Fire Attribute Icon" height="40px" width="40px"/>
+                        <input type="radio" id="darkRadio" name="attrRadioGroup" value="dark" onChange={this.setSelected}/>
+                        <label for="darkRadio" style={{verticalAlign: "middle"}}>
+                            <img src={DarkIcon} alt="Dark Attribute Icon" height="40px" width="40px"/>
                         </label>
-                        <input type="radio" id="divineRadio" name="attrRadioGroup" value="divine"/>
+                        <input type="radio" id="divineRadio" name="attrRadioGroup" value="divine" onChange={this.setSelected}/>
                         <label for="divineRadio" style={{verticalAlign: "middle", paddingRight: "0"}}>
                             <img src={DivineIcon} alt="Divine Attribute Icon" height="40px" width="40px"/>
                         </label>
@@ -168,16 +170,24 @@ export default class MonsterForm extends Component {
                         <p style={{width: "450px", fontSize: "18px", textAlign: "center"}}>{decksInstructions}</p>
                     </div>
                 </div>
-                <div className="formElement" style={{width: "485px"}}>
+                <div className="formElement" style={{display: "flex", width: "485px"}}>
+                    <select id="deckSelect" className="cardInfoSelect">
+                        <option value="" disabled selected>Select Deck</option>
+                        {decks.map((deck) => {
+                            return <option value={deck}>{deck}</option>
+                        })}
+                    </select>
+                    <input id="deckInput" className="basicInput" style={{width: "250px", float: "right"}} maxLength="20" placeholder="Enter deck name"/>
+                    <label for="deckInput"/>
+                </div>
+                <div style={{width: "375px", margin: "10px  auto"}}>
                     <span>
-                        <select id="deckSelect" className="cardInfoSelect">
-                            <option value="" disabled selected>Select Deck</option>
-                            {decks.map((deck) => {
-                                return <option value={deck}>{deck}</option>
-                            })}
-                        </select>
-                        <input id="deckInput" className="basicInput" style={{width: "250px"}} maxLength="20" placeholder="Enter deck name"/>
-                        <label for="deckInput"/>
+                        <input type="radio" id="mainDeckRadio" name="deckRadioGroup" value="Main Deck" onChange={this.setDeckType}/>
+                        <label for="mainDeckRadio" style={{color: "white", fontFamily: "EBGaramond, serif", fontSize: "18px", marginRight: "10px"}}>Main Deck</label>
+                        <input type="radio" id="extraDeckRadio" name="deckRadioGroup" value="Extra Deck" onChange={this.setDeckType}/>
+                        <label for="extraDeckRadio" style={{color: "white", fontFamily: "EBGaramond, serif", fontSize: "18px", marginRight: "10px"}}>Extra Deck</label>
+                        <input type="radio" id="sideDeckRadio" name="deckRadioGroup" value="Side Deck" onChange={this.setDeckType}/>
+                        <label for="sideDeckRadio" style={{color: "white", fontFamily: "EBGaramond, serif", fontSize: "18px"}}>Side Deck</label>
                     </span>
                 </div>
                 <div className="formElement" style={{width: "190px"}}>
@@ -196,7 +206,7 @@ export default class MonsterForm extends Component {
                             return <option value={tag}>{tag}</option>
                         })}
                     </select>
-                    <input id="tagInput" className="basicInput" style={{width: "250px", verticalAlign: "top"}} maxLength="120" placeholder="Enter tag(s)"/>
+                    <input id="tagInput" className="basicInput" style={{width: "250px", verticalAlign: "top"}} maxLength="70" placeholder="Enter tag(s)"/>
                     <label for="tagInput"/>
                 </span>
                 </div>
